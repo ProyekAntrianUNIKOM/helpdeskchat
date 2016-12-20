@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>Help Desk Chat</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-2.2.4.js"
+                integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <style>
+            body{margin-top:20px}
+            #messageArea{
+                display: none;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div id="userArea" class="row">
+                <div class="form-group">
+                    <label>Enter Username</label>
+                    <input class="form-control" id="username">
+                    <br>
+                    <input type="button" id="btnLogin" class="btn btn-primary" value="Login">
+                </div>
+            </div>
+            <div class="row" id="messageArea">
+                <div class="col-md-4">
+                    <div class="well">
+                        <h3>Online Users</h3>
+                        <ul class="list-group" id="users"></ul>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="chat" id="chat"></div>
+                        <div class="form-group">
+                            <label>Enter Message</label>
+                            <textarea class="form-control" id="message"></textarea>
+                            <br>
+                            <input type="button" class="btn btn-primary" id="btnKirim" value="Send Message">
+                        </div>
+                </div>
+            <div>
+        </div>
+        <script>
+            $(function(){
+                var socket = io.connect(); 
+                var $btnKirim = $('#btnKirim');
+                var $message = $('#message');
+                var $chat = $("#chat");
+                var $userArea = $("#userArea");
+                var $messageArea = $("#messageArea");
+                var $btnLogin = $("#btnLogin");
+                var $users = $("#users");
+
+                var $username = $("#username");
+
+                $btnKirim.click(function(){
+                    socket.emit('kirim pesan', $message.val());
+                    $message.val('');
+                });
+
+                socket.on('pesan baru',function(data){
+                    $chat.append('<div class="well"><strong>'+data.user+' : </strong> <br>'+data.msg+'</div>');
+                });
+
+                //login 
+                $btnLogin.click(function(){
+                    socket.emit('new user',$username.val(), function(data){
+                        if(data){
+                            $userArea.hide();
+                            $messageArea.show();
+                        }
+                    });
+                });
+
+                //get user 
+                socket.on('get users',function(data){
+                    var html = ''; 
+                    for(i=0; i< data.length; i++){
+                        html +="<li class='list-group-item'>"; 
+                        html +="<img width='50' height='50' src='http://cs625730.vk.me/v625730358/1126a/qEjM1AnybRA.jpg'>"; 
+                        html +="<div class='info'><div class='user'>"+data[i]+"</div><div class='status on'>Online</div></div></li>";
+                    }
+                    $users.html(html);
+                });
+            });
+        </script>
+    </body>
+</html>

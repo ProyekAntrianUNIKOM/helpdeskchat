@@ -1,0 +1,193 @@
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('../fonts/Montserrat-SemiBold.otf');
+}
+
+@font-face {
+    font-family: 'Montserrat-Regular';
+    src: url('../fonts/Montserrat-Regular.otf');
+}
+
+@font-face {
+    font-family: 'Lobster';
+    src: url('../fonts/Lobster.otf');
+}
+
+.flex {
+	display: flex;
+	display: -webkit-flex;
+}
+
+.bor {
+	border: 1px solid #000;
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+    overflow: hidden;
+}
+
+#background {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: url('../img/bg-img.jpg') no-repeat fixed center;
+	background-size: cover;
+}
+
+#bg {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: -webkit-linear-gradient( right, rgba(3, 185, 242, .9), rgba(29, 209, 246, .9) );
+    background: -moz-linear-gradient( right, rgba(3, 185, 242, .9), rgba(29, 209, 246, .9) );
+    background: linear-gradient( right, rgba(3, 185, 242, .9), rgba(29, 209, 246, .9) );
+}
+
+#bg-header {
+/*    height: 200px;*/
+    height: 20%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#bg-header h1 {
+    font-family: calibri;
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: lighter;
+    padding-left: 2%;
+}
+
+#bg-header table {
+    margin-left: 2%;
+    height: 80%;
+}
+
+#bg-header table tr {
+    height: 100%;
+}
+
+#logo {
+    min-width: 120px;
+}
+
+#label-1 {
+    font-family: 'Montserrat-SemiBold';
+    color: #017dbe;
+    font-size: 54px;
+    margin: -10px;
+}
+
+#label-2 {
+    font-family: 'Montserrat-Regular';
+    font-size: 12px;
+    color: #ffffff;
+}
+
+#label-3 {
+    font-family: 'Lobster';
+    color: #ffffff;
+    font-size: 24px;
+}
+
+#header-img {
+    height: 100%;
+    margin-right: 2%;
+}
+
+#header-img img {
+    height: 100%;
+    -webkit-filter: opacity(70%);
+}
+
+#bg-main {
+/*    height: 500px;*/
+    height: 73%;
+    background: rgba(1, 125, 190, .2);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#bg-main #label {
+    font-family: 'Montserrat-Regular';
+    color: #ffffff;
+    font-size: 25px;
+    align-items: center;
+    width: 85%;
+    height: 5%;
+}
+
+#label #text {
+    margin-left: 2.8%;
+    padding-top: 5%;
+}
+
+#bg-row {
+/*    width: 1200px;*/
+/*    height: 450px;*/
+    margin-top: -50px;
+    width: 85%;
+    height: 85%;
+    margin-bottom: 4%;
+    margin-top: 4%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.menu-utama {
+    height: 100%;
+    width: 40%;
+    font-size: 300%;
+    margin: 2%;
+}
+
+.menu-akademik, .menu-administrasi {
+    height: 50%;
+    width: 30%;
+    font-size: 200%;
+    margin: 1%;
+}
+
+#bg-row a {
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    text-align: center;
+    text-decoration: none;
+    color: #017dbe;
+    font-family: 'Montserrat-SemiBold';
+}
+
+#bg-main #back {
+    position: absolute;
+    left: 5%;
+    bottom: 12%;
+}
+
+#bg-main #back a img {
+    background-repeat: no-repeat;
+}
+
+
+#footer {
+    font-size: 20px;
+    font-family: calibri;
+    font-weight: lighter;
+    height: 7%;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#footer-time {
+    margin: 2%;
+    font-size: 35px;
+    color: #017dbe;
+    font-family: calibri;
+}
+

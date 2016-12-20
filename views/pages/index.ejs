@@ -1,0 +1,192 @@
+<html>
+    <head>
+        <title>Help Desk Chat</title>
+        <link rel="stylesheet" href="public/lib/bootstrap-3.3.7-dist/css/bootstrap.css">
+        <script src="https://code.jquery.com/jquery-2.2.4.js"
+                integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+                crossorigin="anonymous"></script>
+        <script src="public/lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <style>
+            body{background:#eee}
+            *{margin:0 auto;
+            padding:0;}
+            #messageArea{
+                display: none;
+                background:#fff; 
+                
+                height:100%;
+            }
+            #onlineuser{
+                background:#343B80; 
+                color:#fff;
+                height:100%;
+                padding: 0;
+                marging: 0;
+            }
+            #users{
+                width:100%; 
+                padding:0; 
+                margin:0;
+            }
+            #users li{
+                list-style: none;
+                font-size: 13px;
+                display:block;
+                height:80px;
+                padding: 10px;
+            }
+            #users li .active{
+                background: rgb(37, 43, 99);
+            }
+            #users img{
+                border-radius: 50%;
+                border: 3px solid #696c75;
+                margin: 5px;
+                float:left
+            }
+            .info {
+                margin-left:10px;
+                float: left;
+                font-weight: bold;
+                font-size: 14px;
+            }
+            #users .user{
+                color: #fff;
+                margin-top: 12px;
+            }
+            #users .status{
+                position: relative;
+                color: #a8adb3;
+            }
+            #users input.form-control {
+                background: #333869;
+                border: 0;
+            }
+            #search{
+                padding: 15px;
+            }
+            #search input.form-control{
+                background: #222756;
+                border: 0;
+            }
+            #header{
+                border-bottom: 1px solid #b7b7b7;
+            }
+            #chatMessage{
+                height:100%; 
+                position:relative;
+            }    
+            #chat{
+                height: 500px;
+                overflow: auto;
+            }
+            .form-group.pesan{
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding-right: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- HEADER --!>
+        <div class="container">
+            <div id="userArea" class="row col-md-6 col-md-offset-3" style="margin-top:30px">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <b>Chat Login</b>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Username Anda</label>
+                        <input class="form-control" id="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password Anda</label>
+                        <input class="form-control" id="password" type="password">
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="button" id="btnLogin" class="btn btn-success" value="Login">
+                </div>
+            </div>
+            </div>
+
+            <div class="row" id="messageArea">
+                <div id="onlineuser" class="col-md-3">
+                    <% include ../partials/sidebar %>
+                </div>
+                <div class="col-sm-9" id="chatMessage">
+                    <div id="header">
+                        <h3>General</h3>
+                    </div>
+                    <div class="chat" id="chat"></div>
+                        <div class="form-group pesan">
+                            <label>Enter Message</label>
+                            <textarea class="form-control" id="message"></textarea>
+                        </div>
+                </div>
+            <div>
+        </div>
+        <script>
+            $(function(){
+                var socket = io.connect(); 
+                var $btnKirim = $('#btnKirim');
+                var $message = $('#message');
+                var $chat = $("#chat");
+                var $userArea = $("#userArea");
+                var $messageArea = $("#messageArea");
+                var $btnLogin = $("#btnLogin");
+                var $users = $("#users");
+
+                var $username = $("#username");
+                
+                $('#message').keydown(function() {
+                    if (event.keyCode == 13) {
+                        socket.emit('kirim pesan', $message.val());
+                        $message.val('');
+                        return false;
+                    }
+                });
+                
+                $btnKirim.click(function(){
+                    socket.emit('kirim pesan', $message.val());
+                    $message.val('');
+                });
+
+                socket.on('pesan baru',function(data){
+                    $chat.append('<div class="well"><strong>'+data.user+' : </strong> <br>'+data.msg+'</div>');
+                });
+
+                //login 
+                $btnLogin.click(function(){
+                    socket.emit('new user',$username.val(), function(data){
+                        if(data){
+                            $userArea.hide();
+                            $messageArea.show();
+                            socket.emit('get data');
+                            socket.on('get data',function(data){
+                                console.log(data);
+                                data.forEach(function(item){
+                                    $chat.append('<div class="well"><strong>'+item.username+' : </strong> <br>'+item.message+'</div>');
+                                });
+                            });
+                        }
+                    });
+                });
+
+                //get user 
+                socket.on('get users',function(data){
+                    var html = ''; 
+                    for(i=0; i< data.length; i++){
+                        html +="<li>"; 
+                        html +="<img width='50' height='50' src='http://cs625730.vk.me/v625730358/1126a/qEjM1AnybRA.jpg'>"; 
+                        html +="<div class='info'><div class='user'>"+data[i]+"</div><div class='status on'>Online</div></div></li>";
+                    }
+                    $users.html(html);
+                });
+            });
+        </script>
+    </body>
+</html>
